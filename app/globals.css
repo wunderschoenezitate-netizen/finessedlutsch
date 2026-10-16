@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/*
+ * Origo design tokens.
+ * Base: zinc (deep slate) surfaces. Accents: emerald (direct / savings) and cyan (live / signal).
+ * Chart series slots were validated for CVD separation and contrast against --color-surface-2.
+ */
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --color-canvas: #09090b;
+  --color-surface: #0f0f12;
+  --color-surface-2: #18181b;
+  --color-surface-3: #1f1f23;
+  --color-line: #27272a;
+  --color-line-strong: #3f3f46;
+  --color-ink: #f4f4f5;
+  --color-ink-2: #a1a1aa;
+  --color-ink-3: #8b8b94;
+
+  /* Price build-up series, fixed order: factory → logistics → distributor → broker */
+  --color-series-factory: #0f9f6e;
+  --color-series-logistics: #3b82f6;
+  --color-series-distributor: #d97706;
+  --color-series-broker: #a855f7;
+  --color-series-neutral: #3f3f46;
+
+  --animate-ticker: ticker 80s linear infinite;
+  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+
+  @keyframes ticker {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: rgb(16 185 129 / 0.35);
+  color: #fff;
+}
+
+@layer components {
+  /* Hairline grid used behind hero and section headers */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Range input — emerald thumb on a zinc track; fill driven by --range-fill */
+  .range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 1.5rem;
+    background: transparent;
+    cursor: pointer;
+  }
+  .range:focus-visible {
+    outline: none;
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      #34d399 0%,
+      #34d399 var(--range-fill, 50%),
+      var(--color-line-strong) var(--range-fill, 50%),
+      var(--color-line-strong) 100%
+    );
+  }
+  .range::-moz-range-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: var(--color-line-strong);
+  }
+  .range::-moz-range-progress {
+    height: 4px;
+    border-radius: 9999px;
+    background: #34d399;
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -6px;
+    height: 16px;
+    width: 16px;
+    border-radius: 9999px;
+    background: var(--color-ink);
+    border: 3px solid #10b981;
+    box-shadow: 0 0 0 4px rgb(16 185 129 / 0.15);
+  }
+  .range::-moz-range-thumb {
+    height: 12px;
+    width: 12px;
+    border-radius: 9999px;
+    background: var(--color-ink);
+    border: 3px solid #10b981;
+  }
+  .range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgb(52 211 153 / 0.45);
+  }
+  .range:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 4px rgb(52 211 153 / 0.45);
+  }
+
+  /* Thin scrollbars for dense data containers */
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+
+  /* Native <dialog> used for slide-over sheets */
+  dialog.sheet::backdrop {
+    background: rgb(0 0 0 / 0.6);
+    backdrop-filter: blur(2px);
+  }
+}
